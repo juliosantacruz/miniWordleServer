@@ -4,8 +4,11 @@ from django.urls import reverse
 from django.views import generic
 from django.urls import reverse_lazy
 from django.views import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import *
 from .forms import *
+from .serializer import WordSerializer
 # Create your views here.
 
 class WordFormView(generic.FormView):
@@ -34,3 +37,13 @@ class WordDeleteView(View):
         word = Word.objects.get(id=word_id)
         word.delete()
         return HttpResponseRedirect(reverse('add_word'))
+    
+
+class WordListAPI(APIView):
+    authentication_classes=[]
+    permission_classes=[]
+    def get(self, resquest):
+        words = Word.objects.all()
+        serializer= WordSerializer(words, many=True)
+
+        return Response(serializer.data)
