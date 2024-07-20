@@ -1,12 +1,12 @@
 {
     "builds": [{
-      "src": "api/wsgi.py",
+      "src": "wordle-services/api/wsgi.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "15mb", "runtime": "python3.11.3" }
     }],
     "routes": [
       {
-        "src": "/(.*)",
+        "src": "wordle-services/(.*)",
         "dest": "api/wsgi.py"
       }
     ]
