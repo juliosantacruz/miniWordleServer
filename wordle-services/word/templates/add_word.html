@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<main class="word_list">
+  <section class='listado_palabras'>
+    <h1>Listado de palabras</h1>
+    <ul >
+      {% for word in word_list%}
+      <li>
+        {{word.word}} - {{word.word_size}} letras - {{word.category.name}} -
+        <form
+          action="{% url 'delete_word' word.id %}"
+          method="post"
+          class="wordForm"
+        >
+          {% csrf_token %}
+          <button type="submit">Eliminar</button>
+        </form>
+      </li>
+      {%endfor%}
+    </ul>
+  </section>
+  <section class='formulario_palabras'>
+    <form action="{% url 'add_word' %}" method="post">
+      {% csrf_token %} {{ form.as_p}}
+      <button type="submit">Agregar</button>
+    </form>
+  </section>
+</main>
+{% endblock content %}

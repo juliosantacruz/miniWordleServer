@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<main class="word_list">
+  <section>
+    <h1>Listado de palabras</h1>
+    <ul>
+      {% for word in words%}
+      <li>
+        {{word.word}} - {{word.word_size}} letras - {{word.category.name}}
+      </li>
+      {%endfor%}
+    </ul>
+  </section>
+  <section>
+
+  </section>
+</main>
+{% endblock content %}
