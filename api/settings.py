@@ -138,11 +138,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Cors authorization
-CORS_ALLOWED_ORIGINS = [
-    'http://127.0.0.1:5173',
-    'http://localhost:5173',
-    'https://juliosantacruz.dev/wordle-game/',
-]
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS').split(' ')
 
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
