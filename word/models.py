@@ -1,5 +1,5 @@
 from django.db import models
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class Category(models.Model):
@@ -14,7 +14,7 @@ class Word(models.Model):
     word=models.CharField(max_length=8, verbose_name='palabra')
     description=models.CharField(max_length=360, verbose_name='descripcion')
     url=models.URLField(verbose_name='link', blank=True, null=True)
-    image=models.ImageField(upload_to='word', verbose_name='imagen', blank=True, null=True)
+    image=CloudinaryField('image')
     category=models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='categoria')
     created_at=models.DateTimeField(auto_now_add=True, verbose_name='fecha de creacion')
     word_size = models.IntegerField(verbose_name='tamanio',blank=True, null=True)

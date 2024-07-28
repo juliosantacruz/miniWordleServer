@@ -15,15 +15,26 @@ import os
 import environ 
 import mimetypes
 
-
-mimetypes.add_type("text/css", ".css", True)
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api	
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+
+# cloudinary
+cloudinary.config( 
+  	cloud_name = env.str('CLOUDINARY_NAME'),
+  	api_key = env.str('CLOUDINARY_KEY'),
+  	api_secret = env.str('CLOUDINARY_SECRET')
+)
+
+mimetypes.add_type("text/css", ".css", True)
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -47,7 +58,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'word',
-    'rest_framework'
+    'rest_framework',
+
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -92,6 +105,21 @@ DATABASES = {
     }
 }
 
+# Replace the DATABASES section of your settings.py with this
+DATABASES = {
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': env.str('PGDATABASE'),
+    'USER': env.str('PGUSER'),
+    'PASSWORD': env.str('PGPASSWORD'),
+    'HOST': env.str('PGHOST'),
+    'PORT': env.str('PGPORT', 5432),
+    'OPTIONS': {
+      'sslmode': 'require',
+    },
+  }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -130,12 +158,14 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -152,3 +182,4 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
