@@ -23,6 +23,7 @@ from .views import HomeView
 urlpatterns = [
     path('', HomeView, name='home' ),
     path('word/', include('word.urls')),
+    path('user/', include('user_profile.urls')),
     path('admin/', admin.site.urls),
 ] 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) 
