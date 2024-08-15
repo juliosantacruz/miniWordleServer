@@ -1,11 +1,10 @@
 from rest_framework import serializers
-from .models import UserProfile
+from .models import UserProfile, UserScore
 from django.contrib.auth.models import User
 
 
 # Registro de usuarios
 class UserProfileSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = UserProfile
         fields = [
@@ -28,3 +27,13 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         UserProfile.objects.create(user=user, **user_profile_data)
         return user
+
+
+class UserScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model= UserScore
+        fields = ['id','profile', 'word','time','score']
+    
+    def create(self, validated_data):
+        score = UserScore.objects.create(**validated_data)
+        return score

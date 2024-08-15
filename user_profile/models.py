@@ -22,9 +22,8 @@ class UserProfile(models.Model):
 class UserScore(models.Model):
     profile=models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     word=models.ForeignKey(Word, on_delete=models.CASCADE)
-    time=models.IntegerField() # en segundos
+    time=models.IntegerField(null=True, blank=True) # en segundos
     score=models.IntegerField()
-    is_resolved=models.BooleanField(default=False)
 
     def __str__(self):
         return self.profile.user.username
