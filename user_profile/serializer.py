@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import UserProfile, UserScore
+from word.models import Word
 from django.contrib.auth.models import User
 
 
@@ -37,3 +38,9 @@ class UserScoreSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         score = UserScore.objects.create(**validated_data)
         return score
+    
+
+class UserWordsSerializar(serializers.ModelSerializer):
+    class Meta:
+        model= Word
+        fields = ["id","word", "description", "url", "image", "category"]

@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .serializer import UserSerializer, UserScoreSerializer
+from .serializer import UserSerializer, UserScoreSerializer, UserWordsSerializar
 from .models import UserScore, UserProfile
-
+from word.models import Word
+from word.serializer import WordSerializer
 # Create your views here.
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.views import APIView
@@ -49,27 +50,12 @@ class MyTokenObteainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
-# @permission_classes([IsAuthenticated])
-# class UserScoreAPI(APIView):
-#     authentication_classes=[]
-#     permission_classes=[]
-
-#     def get(self, request):
-#         # user_profile = UserProfile.objects.get(request.user)
-#         print('user ',request._user )
-#         score = UserScore.objects.all()
-#         serializer= UserScoreSerializer(score, many=True)
-
-#         return Response(serializer.data)
-
-
 @api_view(["GET", "POST", "PUT", "DELETE"])
 @permission_classes([IsAuthenticated])
 def UserScoreAPI(request, score_id=None):
     user = request.user
     profile_user = UserProfile.objects.get(user=user)
-    # print(dir(request ))
-    # print(score_id)
+
     if request.method == "GET":
         score = UserScore.objects.filter(profile=profile_user)
         serializer = UserScoreSerializer(score, many=True)
@@ -112,3 +98,26 @@ def UserScoreAPI(request, score_id=None):
         }
         return Response(response_data)
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(["GET", "POST", "PUT", "DELETE"])
+@permission_classes([IsAuthenticated])
+def UserWordsAPI(request):
+    user = request.user
+    profile_user = UserProfile.objects.get(user=user)
+    if request.method == "GET":
+        score = UserScore.objects.filter(profile=profile_user)
+        words_list = []
+        for le_score in score:
+            element = Word.objects.get(id = le_score.word_id)
+            words_list.append(element)
+
+        serializer = WordSerializer(words_list, many=True)
+        return Response(serializer.data)
+    else:
+        response_data = {
+            "details": "Metodo no Autorizado",
+            "ok": True,
+            "status": status.HTTP_405_METHOD_NOT_ALLOWED,
+        }
+        return Response(response_data)

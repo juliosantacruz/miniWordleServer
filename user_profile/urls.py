@@ -14,5 +14,6 @@ urlpatterns = [
     path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
     
     path('api/user/score', UserScoreAPI, name='user_score_api'),
+    path('api/user/words', UserWordsAPI, name='user_words_api'),
 
 ]
