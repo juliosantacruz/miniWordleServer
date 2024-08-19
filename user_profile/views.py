@@ -37,12 +37,14 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["name"] = user.first_name
         token["username"] = user.username
         token["email"] = user.email
-        user_profile = user.user_profile if hasattr(user, "user_profile") else None
+        # user_profile = user.user_profile if hasattr(user, "user_profile") else None
+        user_profile = UserProfile.objects.get(user=user)
+        print(user_profile)
         # Add custom claims from UserProfile model
         if user_profile:
-            token["company"] = user_profile.company
+            token["profile_id"]=user_profile.id
             token["phone"] = user_profile.phone
-            token["isAdmin"] = user_profile.isAdmin
+            token["isAdmin"] = user_profile.is_admin
         return token
 
 
