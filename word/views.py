@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from .models import *
 from .forms import *
 from .serializer import WordSerializer
+import random
 # Create your views here.
 
 class WordFormView(generic.FormView):
@@ -45,5 +46,16 @@ class WordListAPI(APIView):
     def get(self, resquest):
         words = Word.objects.all()
         serializer= WordSerializer(words, many=True)
+
+        return Response(serializer.data)
+    
+class WordDayAPI(APIView):
+    authentication_classes=[]
+    permission_classes=[]
+    def get(self, resquest):
+        words = Word.objects.all()
+        word = random.choice(words)
+        print(word)
+        serializer= WordSerializer(word )
 
         return Response(serializer.data)
